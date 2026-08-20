@@ -34,64 +34,9 @@ function Navbar() {
         }`}
       >
         {/* LOGO */}
-        <a
-          href="#home"
-          onClick={closeMenu}
-          className="nav-logo text-xl font-bold tracking-tight text-[#F5F1E8]"
-        >
-          YOUR
-          <span className="font-normal text-[#D4A62A]">
-            SPICES
-          </span>
-        </a>
+       
 
-        {/* DESKTOP NAVIGATION */}
-        <div className="hidden items-center gap-7 lg:flex">
-          <a href="#about" className="nav-link">
-            About
-          </a>
-
-          <a href="#products" className="nav-link">
-            Products
-          </a>
-
-          <a href="#quality" className="nav-link">
-            Quality
-          </a>
-
-          <a href="#markets" className="nav-link">
-            Markets
-          </a>
-
-          <a href="#process" className="nav-link">
-            Export Process
-          </a>
-
-          <a href="#why-us" className="nav-link">
-            Why Us
-          </a>
-
-          <a href="#bulk" className="nav-link">
-            Bulk Supply
-          </a>
-
-          <a href="#contact" className="nav-link">
-            Contact
-          </a>
-
-          {/* QUOTE BUTTON */}
-          <a
-            href="#quote"
-            className="group flex items-center gap-2 rounded-full bg-[#D4A62A] px-6 py-3 text-sm font-medium text-black transition-all duration-300 hover:bg-[#E6BE52]"
-          >
-            Get a Quote
-
-            <span className="transition-transform duration-300 group-hover:translate-x-1">
-              →
-            </span>
-          </a>
-        </div>
-
+       
         {/* MOBILE MENU BUTTON */}
         <button
           type="button"
