@@ -46,6 +46,7 @@ a {
   text-decoration: none;
 }
 
+/* Horizontal Marquee Animation */
 .anim-marquee {
   animation: marquee 22s linear infinite;
 }
@@ -57,6 +58,33 @@ a {
 
   100% {
     transform: translateX(-50%);
+  }
+}
+
+/* Vertical Ticker Marquee Animations (For Preloader) */
+.animate-marquee-vertical {
+  animation: marquee-vertical 12s linear infinite;
+}
+
+.animate-marquee-vertical-reverse {
+  animation: marquee-vertical-reverse 12s linear infinite;
+}
+
+@keyframes marquee-vertical {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes marquee-vertical-reverse {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }
 

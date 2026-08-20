@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Preloader from "./components/Preloader";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -13,8 +15,13 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <>
+      {/* Preloader animation overlay */}
+      {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+
       <Navbar />
 
       <main>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import Globe from "globe.gl";
 import * as THREE from "three";
 
-// --- 1. SMALLER WHITE ROUNDED MOUSE FOLLOWER ---
+// --- 1. CUSTOM CURSOR ---
 function CustomCursor() {
   const [position, setPosition] = useState({ x: -100, y: -100 });
 
@@ -24,7 +24,7 @@ function CustomCursor() {
   );
 }
 
-// --- 2. TEXT SCRAMBLE / DECODE ANIMATION COMPONENT ---
+// --- 2. TEXT SCRAMBLE ANIMATION ---
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
 
 function ScrambleText({ text, className = "", onClick, autoTrigger = false }) {
@@ -79,7 +79,7 @@ function ScrambleText({ text, className = "", onClick, autoTrigger = false }) {
   );
 }
 
-// --- 3. TOP-LEFT VERTICAL UPWARD NEWS TICKER ---
+// --- 3. VERTICAL NEWS TICKER ---
 const HEADLINES = [
   "NEWS: HOW AN AUSTRALIAN FREIGHT FORWARDER'S WEBSITE...",
   "NEWS: COLOMBIA EARTHQUAKE DISRUPTS KEY FREIGHT ROUTES...",
@@ -191,7 +191,6 @@ function Hero() {
     },
   ];
 
-  // Track scroll position for smooth upward sliding movement
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -215,36 +214,36 @@ function Hero() {
     const globe = Globe()(container)
       .backgroundColor("rgba(0,0,0,0)")
       .showAtmosphere(true)
-      .atmosphereColor("#1d4ed8")
-      .atmosphereAltitude(0.22)
+      .atmosphereColor("#3b82f6")
+      .atmosphereAltitude(0.2)
       .showGraticules(false);
 
     globeInstance.current = globe;
 
     const darkSphereMaterial = new THREE.MeshPhongMaterial({
-      color: 0x0c0d10,
-      emissive: 0x050608,
-      specular: 0x22242b,
-      shininess: 8,
+      color: 0x07090e,
+      emissive: 0x020305,
+      specular: 0x1d2433,
+      shininess: 12,
       transparent: true,
-      opacity: 0.96,
+      opacity: 0.98,
     });
     globe.globeMaterial(darkSphereMaterial);
 
     globe
       .polygonsData(countriesData)
-      .polygonCapColor(() => "rgba(255, 255, 255, 0.9)")
+      .polygonCapColor(() => "rgba(255, 255, 255, 0.85)")
       .polygonSideColor(() => "rgba(0, 0, 0, 0)")
-      .polygonStrokeColor(() => "#1e2025")
+      .polygonStrokeColor(() => "#131822")
       .polygonAltitude(0.005);
 
     globe
       .pointsData(locationsList)
       .pointLat("lat")
       .pointLng("lng")
-      .pointColor(() => "#d94800")
-      .pointRadius(0.4)
-      .pointAltitude(0.025);
+      .pointColor(() => "#f97316")
+      .pointRadius(0.5)
+      .pointAltitude(0.02);
 
     globe
       .arcsData(routes)
@@ -257,8 +256,8 @@ function Hero() {
       .arcDashGap((d) => d.gap)
       .arcDashInitialGap((d) => d.initialGap)
       .arcDashAnimateTime((d) => d.duration)
-      .arcStroke(0.7)
-      .arcAltitudeAutoScale(0.32);
+      .arcStroke(0.8)
+      .arcAltitudeAutoScale(0.25);
 
     globe
       .htmlElementsData(locationsList)
@@ -276,22 +275,22 @@ function Hero() {
         `;
         el.innerHTML = `
           <div style="
-            width: 5px;
-            height: 5px;
-            background-color: #d94800;
+            width: 4px;
+            height: 4px;
+            background-color: #f97316;
             border-radius: 50%;
-            box-shadow: 0 0 6px #d94800;
+            box-shadow: 0 0 6px #f97316;
           "></div>
           <span style="
-            background: rgba(8, 8, 10, 0.92);
+            background: rgba(0, 0, 0, 0.95);
             color: #ffffff;
-            padding: 2px 5px;
+            padding: 1px 4px;
             border-radius: 2px;
-            font-family: ui-monospace, monospace;
-            font-size: 9px;
+            font-family: monospace;
+            font-size: 8px;
             font-weight: 700;
             letter-spacing: 0.5px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             white-space: nowrap;
           ">
             ${d.name}
@@ -302,11 +301,10 @@ function Hero() {
 
     const controls = globe.controls();
     controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.35;
+    controls.autoRotateSpeed = 0.4;
     controls.enableZoom = false;
 
-    // Focus on India
-    globe.pointOfView({ lat: 20.5937, lng: 78.9629, altitude: 2.1 }, 0);
+    globe.pointOfView({ lat: 20.0, lng: 70.0, altitude: 1.55 }, 0);
 
     const handleResize = () => {
       if (!globeContainer.current) return;
@@ -315,7 +313,7 @@ function Hero() {
         .height(globeContainer.current.clientHeight);
     };
 
-    handleResize();
+    requestAnimationFrame(handleResize);
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -325,17 +323,30 @@ function Hero() {
     };
   }, [countriesData]);
 
+  // Pause rotation on cursor enter, resume on exit
+  const handleMouseEnter = () => {
+    if (globeInstance.current) {
+      const controls = globeInstance.current.controls();
+      controls.autoRotate = false;
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (globeInstance.current) {
+      const controls = globeInstance.current.controls();
+      controls.autoRotate = true;
+    }
+  };
+
   return (
     <div className="bg-[#050507] font-mono text-white cursor-none min-h-[150vh]">
-      {/* Custom Cursor */}
       <CustomCursor />
 
-      {/* --- HERO SECTION --- */}
       <section className="relative min-h-screen w-full overflow-hidden">
-        {/* Background Radial Glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_50%,_var(--tw-gradient-stops))] from-blue-950/20 via-[#050507] to-[#050507]" />
+        {/* Atmosphere Glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_50%,_var(--tw-gradient-stops))] from-blue-900/30 via-[#050507] to-[#050507]" />
 
-        {/* Top Banner Ticker with Upward Moving Words */}
+        {/* Top Banner Ticker */}
         <div className="relative z-20 border-b border-white/10 bg-black/60 px-8 py-1.5">
           <VerticalNewsTicker />
         </div>
@@ -343,7 +354,7 @@ function Hero() {
         {/* Header Bar */}
         <header className="relative z-20 flex w-full items-center justify-between px-8 py-5 md:px-16">
           <div className="text-xl font-black tracking-tighter uppercase text-white">
-            UNITEDCARRIERS
+            COMPANY NAME
           </div>
 
           <div className="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-gray-300">
@@ -366,18 +377,18 @@ function Hero() {
           </div>
         </header>
 
-        {/* Main Layout - Content translates upward on scroll */}
+        {/* Main Content Layout */}
         <div
           className="relative z-10 mx-auto flex min-h-[calc(100vh-100px)] w-full flex-col lg:flex-row transition-transform duration-300 ease-out"
           style={{ transform: `translateY(-${scrollY * 0.4}px)` }}
         >
-          {/* Left Column Text */}
-          <div className="flex w-full flex-col justify-center px-8 py-12 lg:w-1/2 lg:px-16">
+          {/* Left Text */}
+          <div className="flex w-full flex-col justify-center px-8 py-12 lg:w-1/2 lg:px-16 z-20">
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.35em] text-gray-400">
               One Operator
             </p>
 
-            <h1 className="text-5xl font-black uppercase leading-[0.92] tracking-tight sm:text-6xl md:text-7xl lg:text-[88px]">
+            <h1 className="text-5xl font-black uppercase leading-[0.92] tracking-tight sm:text-6xl md:text-7xl lg:text-[84px]">
               Every <br />
               Leg Of The <br />
               Journey
@@ -387,7 +398,6 @@ function Hero() {
               Freight forwarding, land transport, and customs brokerage, unified across APAC under one accountable team.
             </p>
 
-            {/* ACTION BUTTONS: TALK WITH US & OUR SERVICES */}
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <button className="rounded-full bg-white px-7 py-3 text-xs font-bold uppercase tracking-wider text-black transition-all hover:bg-orange-500 hover:text-white">
                 <ScrambleText text="TALK WITH US" />
@@ -400,9 +410,12 @@ function Hero() {
             </div>
           </div>
 
-          {/* Right Column Globe Viewport */}
-          <div className="relative flex h-[600px] w-full items-center justify-center lg:h-auto lg:w-1/2">
-            <div className="pointer-events-none absolute right-[8%] top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-blue-600/20 blur-[110px] md:h-[650px] md:w-[650px]" />
+          {/* GLOBE CONTAINER WITH HOVER LISTENERS */}
+          <div 
+            className="relative h-[500px] w-full lg:absolute lg:right-[-12%] lg:top-[-5%] lg:h-[110vh] lg:w-[68vw] z-10 pointer-events-auto"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             <div ref={globeContainer} className="h-full w-full" />
           </div>
         </div>
