@@ -1,22 +1,47 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+// Hero.js
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Globe from "globe.gl";
 import * as THREE from "three";
 
-// --- 1. CUSTOM CURSOR ---
+// --- DATA DEFINITIONS ---
+const HEADLINES = [
+  "NEWS: HOW AN AUSTRALIAN FREIGHT FORWARDER'S WEBSITE...",
+  "NEWS: COLOMBIA EARTHQUAKE DISRUPTS KEY FREIGHT ROUTES...",
+  "NEWS: CONFLICT DRIVES UP BUNKER PRICES, HELPING INTRA-ASIA...",
+  "NEWS: NEW APAC PORT TERMINALS REDUCE CONTAINER DWELL TIME...",
+];
+
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+
+// --- CUSTOM CURSOR (DESKTOP ONLY) ---
 function CustomCursor() {
   const [position, setPosition] = useState({ x: -100, y: -100 });
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+    
     const handleMouseMove = (e) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [isDesktop]);
+
+  if (!isDesktop) return null;
 
   return (
     <div
-      className="pointer-events-none fixed z-50 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/80 bg-white/10 backdrop-blur-[1px] transition-transform duration-75 ease-out"
+      className="pointer-events-none fixed z-50 hidden lg:block h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/80 bg-white/10 backdrop-blur-[1px] transition-transform duration-75 ease-out"
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
     >
       <div className="absolute inset-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500 shadow-[0_0_6px_#f97316]" />
@@ -24,9 +49,7 @@ function CustomCursor() {
   );
 }
 
-// --- 2. TEXT SCRAMBLE ANIMATION ---
-const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
-
+// --- TEXT SCRAMBLE ANIMATION ---
 function ScrambleText({ text, className = "", onClick, autoTrigger = false }) {
   const [displayText, setDisplayText] = useState(text);
   const animationFrameRef = useRef(null);
@@ -43,9 +66,7 @@ function ScrambleText({ text, className = "", onClick, autoTrigger = false }) {
           .map((char, index) => {
             if (char === " " || char === "|") return char;
             if (index < iteration / 3) return text[index];
-            return SCRAMBLE_CHARS[
-              Math.floor(Math.random() * SCRAMBLE_CHARS.length)
-            ];
+            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
           })
           .join("")
       );
@@ -79,14 +100,7 @@ function ScrambleText({ text, className = "", onClick, autoTrigger = false }) {
   );
 }
 
-// --- 3. VERTICAL NEWS TICKER ---
-const HEADLINES = [
-  "NEWS: HOW AN AUSTRALIAN FREIGHT FORWARDER'S WEBSITE...",
-  "NEWS: COLOMBIA EARTHQUAKE DISRUPTS KEY FREIGHT ROUTES...",
-  "NEWS: CONFLICT DRIVES UP BUNKER PRICES, HELPING INTRA-ASIA...",
-  "NEWS: NEW APAC PORT TERMINALS REDUCE CONTAINER DWELL TIME...",
-];
-
+// --- VERTICAL NEWS TICKER ---
 function VerticalNewsTicker() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -98,14 +112,14 @@ function VerticalNewsTicker() {
   }, []);
 
   return (
-    <div className="relative h-5 overflow-hidden text-[11px] uppercase tracking-widest text-gray-400">
+    <div className="relative h-5 overflow-hidden text-[9px] sm:text-[11px] uppercase tracking-widest text-gray-400">
       <div
         className="transition-transform duration-700 ease-in-out"
         style={{ transform: `translateY(-${currentIndex * 20}px)` }}
       >
         {HEADLINES.map((headline, idx) => (
-          <div key={idx} className="h-5 flex items-center">
-            <ScrambleText text={headline} className="hover:text-white" />
+          <div key={idx} className="h-5 flex items-center truncate">
+            <ScrambleText text={headline} className="hover:text-white truncate" />
           </div>
         ))}
       </div>
@@ -119,6 +133,8 @@ function Hero() {
   const globeInstance = useRef(null);
   const [countriesData, setCountriesData] = useState([]);
   const [scrollY, setScrollY] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const locationsMap = {
     INDIA: { name: "INDIA", lat: 20.5937, lng: 78.9629 },
@@ -191,6 +207,17 @@ function Hero() {
     },
   ];
 
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Scroll handler
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -199,16 +226,35 @@ function Hero() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Fetch countries data
   useEffect(() => {
+    const controller = new AbortController();
+    
     fetch(
-      "https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson"
+      "https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson",
+      { signal: controller.signal }
     )
-      .then((res) => res.json())
-      .then((data) => setCountriesData(data.features));
+      .then((res) => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then((data) => {
+        setCountriesData(data.features);
+      })
+      .catch((err) => {
+        if (err.name !== 'AbortError') {
+          console.error("Error loading countries data:", err);
+        }
+      });
+
+    return () => controller.abort();
   }, []);
 
+  // Initialize Globe
   useEffect(() => {
     if (!globeContainer.current || countriesData.length === 0) return;
+    if (globeInstance.current) return;
+
     const container = globeContainer.current;
 
     const globe = Globe()(container)
@@ -287,7 +333,7 @@ function Hero() {
             padding: 1px 4px;
             border-radius: 2px;
             font-family: monospace;
-            font-size: 8px;
+            font-size: ${isMobile ? '6px' : '8px'};
             font-weight: 700;
             letter-spacing: 0.5px;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -301,16 +347,19 @@ function Hero() {
 
     const controls = globe.controls();
     controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.4;
+    controls.autoRotateSpeed = isMobile ? 0.6 : 0.4;
     controls.enableZoom = false;
 
-    globe.pointOfView({ lat: 20.0, lng: 70.0, altitude: 1.55 }, 0);
+    const altitude = isMobile ? 2.5 : 1.55;
+    globe.pointOfView({ lat: 20.0, lng: 70.0, altitude }, 0);
 
     const handleResize = () => {
       if (!globeContainer.current) return;
-      globe
-        .width(globeContainer.current.clientWidth)
-        .height(globeContainer.current.clientHeight);
+      const width = globeContainer.current.clientWidth;
+      const height = globeContainer.current.clientHeight;
+      if (width > 0 && height > 0) {
+        globe.width(width).height(height);
+      }
     };
 
     requestAnimationFrame(handleResize);
@@ -318,28 +367,48 @@ function Hero() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (container) container.innerHTML = "";
+      if (globeInstance.current) {
+        try {
+          const controls = globeInstance.current.controls();
+          if (controls && controls.dispose) {
+            controls.dispose();
+          }
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+      }
+      if (container) {
+        container.innerHTML = "";
+      }
       globeInstance.current = null;
     };
-  }, [countriesData]);
+  }, [countriesData, isMobile]);
 
   // Pause rotation on cursor enter, resume on exit
   const handleMouseEnter = () => {
     if (globeInstance.current) {
-      const controls = globeInstance.current.controls();
-      controls.autoRotate = false;
+      try {
+        const controls = globeInstance.current.controls();
+        if (controls) controls.autoRotate = false;
+      } catch (e) {
+        // Ignore
+      }
     }
   };
 
   const handleMouseLeave = () => {
     if (globeInstance.current) {
-      const controls = globeInstance.current.controls();
-      controls.autoRotate = true;
+      try {
+        const controls = globeInstance.current.controls();
+        if (controls) controls.autoRotate = true;
+      } catch (e) {
+        // Ignore
+      }
     }
   };
 
   return (
-    <div className="bg-[#050507] font-mono text-white cursor-none min-h-[150vh]">
+    <div className={`bg-[#050507] font-mono text-white ${!isMobile ? 'lg:cursor-none' : ''} min-h-[100vh]`}>
       <CustomCursor />
 
       <section className="relative min-h-screen w-full overflow-hidden">
@@ -347,16 +416,17 @@ function Hero() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_50%,_var(--tw-gradient-stops))] from-blue-900/30 via-[#050507] to-[#050507]" />
 
         {/* Top Banner Ticker */}
-        <div className="relative z-20 border-b border-white/10 bg-black/60 px-8 py-1.5">
+        <div className="relative z-20 border-b border-white/10 bg-black/60 px-4 md:px-8 py-1.5">
           <VerticalNewsTicker />
         </div>
 
         {/* Header Bar */}
-        <header className="relative z-20 flex w-full items-center justify-between px-8 py-5 md:px-16">
-          <div className="text-xl font-black tracking-tighter uppercase text-white">
+        <header className="relative z-30 flex w-full items-center justify-between px-4 py-5 md:px-16">
+          <div className="text-lg md:text-xl font-black tracking-tighter uppercase text-white">
             COMPANY NAME
           </div>
 
+          {/* Desktop Navigation - ONLY visible on desktop */}
           <div className="hidden lg:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-gray-300">
             <ScrambleText text="ABOUT" className="hover:text-orange-500" />
             <ScrambleText text="SERVICES" className="hover:text-orange-500" />
@@ -364,8 +434,8 @@ function Hero() {
             <ScrambleText text="INSIGHTS" className="hover:text-orange-500" />
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="hidden text-[10px] font-semibold uppercase tracking-widest text-gray-400 lg:flex lg:gap-4">
+          <div className="hidden lg:flex items-center gap-6">
+            <div className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 flex gap-4">
               <ScrambleText text="CARBON CALCULATOR" className="hover:text-white" />
               <span>|</span>
               <ScrambleText text="LIVE TRACKING PORTAL" className="hover:text-white" />
@@ -375,46 +445,90 @@ function Hero() {
               <ScrambleText text="WORK WITH US" />
             </button>
           </div>
+
+          {/* Mobile Menu Toggle Button - ONLY visible on mobile */}
+          <button
+            className="block lg:hidden text-white focus:outline-none p-2 z-40"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle Navigation Menu"
+          >
+            <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+              {isMenuOpen ? (
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 111.414 1.414l-4.828 4.829 4.828 4.828z"
+                />
+              ) : (
+                <path
+                  fillRule="evenodd"
+                  d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"
+                />
+              )}
+            </svg>
+          </button>
+
+          {/* Mobile Overlay Navigation Drawer - ONLY visible on mobile when menu is open */}
+          {isMenuOpen && (
+            <div className="fixed inset-0 z-30 flex flex-col items-center justify-center bg-black/95 backdrop-blur-md lg:hidden space-y-6 text-sm font-bold uppercase tracking-widest text-gray-200">
+              <ScrambleText text="ABOUT" className="hover:text-orange-500 py-2" />
+              <ScrambleText text="SERVICES" className="hover:text-orange-500 py-2" />
+              <ScrambleText text="INDUSTRIES" className="hover:text-orange-500 py-2" />
+              <ScrambleText text="INSIGHTS" className="hover:text-orange-500 py-2" />
+              <div className="h-px w-24 bg-white/20 my-2" />
+              <ScrambleText text="CARBON CALCULATOR" className="hover:text-white py-1 text-xs text-gray-400" />
+              <ScrambleText text="LIVE TRACKING PORTAL" className="hover:text-white py-1 text-xs text-gray-400" />
+              <button className="mt-4 rounded-full border border-white/20 bg-white/10 px-8 py-3 text-xs font-bold uppercase tracking-wider text-white">
+                <ScrambleText text="WORK WITH US" />
+              </button>
+            </div>
+          )}
         </header>
 
         {/* Main Content Layout */}
         <div
           className="relative z-10 mx-auto flex min-h-[calc(100vh-100px)] w-full flex-col lg:flex-row transition-transform duration-300 ease-out"
-          style={{ transform: `translateY(-${scrollY * 0.4}px)` }}
+          style={{
+            transform: !isMobile ? `translateY(-${scrollY * 0.4}px)` : "none",
+          }}
         >
           {/* Left Text */}
-          <div className="flex w-full flex-col justify-center px-8 py-12 lg:w-1/2 lg:px-16 z-20">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.35em] text-gray-400">
+          <div className="flex w-full flex-col justify-center px-6 py-8 md:px-16 lg:w-1/2 z-20">
+            <p className="mb-2 md:mb-3 text-[10px] md:text-xs font-bold uppercase tracking-[0.35em] text-gray-400">
               One Operator
             </p>
 
-            <h1 className="text-5xl font-black uppercase leading-[0.92] tracking-tight sm:text-6xl md:text-7xl lg:text-[84px]">
+            <h1 className="text-4xl font-black uppercase leading-[0.95] tracking-tight sm:text-6xl md:text-7xl lg:text-[84px]">
               Every <br />
               Leg Of The <br />
               Journey
             </h1>
 
-            <p className="mt-6 max-w-md text-sm leading-relaxed text-gray-400 md:text-base">
+            <p className="mt-4 md:mt-6 max-w-md text-xs sm:text-sm leading-relaxed text-gray-400 md:text-base">
               Freight forwarding, land transport, and customs brokerage, unified across APAC under one accountable team.
             </p>
 
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <button className="rounded-full bg-white px-7 py-3 text-xs font-bold uppercase tracking-wider text-black transition-all hover:bg-orange-500 hover:text-white">
+            <div className="mt-8 md:mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
+              <button className="rounded-full bg-white px-6 sm:px-7 py-3 text-xs font-bold uppercase tracking-wider text-black transition-all hover:bg-orange-500 hover:text-white">
                 <ScrambleText text="TALK WITH US" />
               </button>
 
-              <button className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition-all hover:border-white hover:bg-white/20">
+              <button className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 sm:px-7 py-3 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition-all hover:border-white hover:bg-white/20">
                 <ScrambleText text="OUR SERVICES" />
                 <span className="text-xs">→</span>
               </button>
             </div>
           </div>
 
-          {/* GLOBE CONTAINER WITH HOVER LISTENERS */}
+          {/* GLOBE CONTAINER */}
           <div 
-            className="relative h-[500px] w-full lg:absolute lg:right-[-12%] lg:top-[-5%] lg:h-[110vh] lg:w-[68vw] z-10 pointer-events-auto"
+            className={`relative ${
+              isMobile ? 'h-[280px] sm:h-[400px] w-full mt-4' : 'h-[380px] sm:h-[480px] w-full lg:absolute lg:right-[-12%] lg:top-[-5%] lg:h-[110vh] lg:w-[68vw]'
+            } z-10 pointer-events-auto`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onTouchStart={handleMouseEnter}
+            onTouchEnd={handleMouseLeave}
           >
             <div ref={globeContainer} className="h-full w-full" />
           </div>
