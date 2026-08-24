@@ -29,7 +29,7 @@ function CustomCursor() {
 
   useEffect(() => {
     if (!isDesktop) return;
-    
+
     const handleMouseMove = (e) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
@@ -136,73 +136,102 @@ function Hero() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Locations matching an EMEA-focused network (Europe / Middle East / Africa)
   const locationsMap = {
-    INDIA: { name: "INDIA", lat: 20.5937, lng: 78.9629 },
-    SINGAPORE: { name: "SINGAPORE", lat: 1.3521, lng: 103.8198 },
-    JAPAN: { name: "JAPAN", lat: 36.2048, lng: 138.2529 },
-    AUSTRALIA: { name: "AUSTRALIA", lat: -25.2744, lng: 133.7751 },
-    QATAR: { name: "QATAR", lat: 25.3548, lng: 51.1839 },
     GERMANY: { name: "GERMANY", lat: 51.1657, lng: 10.4515 },
-    UK: { name: "UK", lat: 55.3781, lng: -3.436 },
+    ITALY: { name: "ITALY", lat: 41.8719, lng: 12.5674 },
+    SPAIN: { name: "SPAIN", lat: 40.4637, lng: -3.7492 },
+    TURKEY: { name: "TURKEY", lat: 38.9637, lng: 35.2433 },
+    ISRAEL: { name: "ISRAEL", lat: 31.0461, lng: 34.8516 },
+    EGYPT: { name: "EGYPT", lat: 26.8206, lng: 30.8025 },
+    QATAR: { name: "QATAR", lat: 25.3548, lng: 51.1839 },
+    SAUDI_ARABIA: { name: "SAUDI ARABIA", lat: 23.8859, lng: 45.0792 },
     KENYA: { name: "KENYA", lat: -1.2921, lng: 36.8219 },
-    USA: { name: "USA", lat: 37.0902, lng: -95.7129 },
+    SOUTH_AFRICA: { name: "SOUTH AFRICA", lat: -30.5595, lng: 22.9375 },
   };
 
   const locationsList = Object.values(locationsMap);
 
   const routes = [
     {
-      from: locationsMap.INDIA,
-      to: locationsMap.SINGAPORE,
-      duration: 3800,
-      gap: 1.2,
-      dash: 0.25,
+      from: locationsMap.SPAIN,
+      to: locationsMap.ITALY,
+      duration: 3600,
+      gap: 1.1,
+      dash: 0.26,
       initialGap: 0.0,
       color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
     },
     {
-      from: locationsMap.INDIA,
-      to: locationsMap.QATAR,
-      duration: 4200,
-      gap: 1.1,
-      dash: 0.28,
-      initialGap: 0.2,
-      color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
-    },
-    {
-      from: locationsMap.SINGAPORE,
-      to: locationsMap.JAPAN,
-      duration: 4500,
-      gap: 1.3,
-      dash: 0.22,
-      initialGap: 0.4,
-      color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
-    },
-    {
-      from: locationsMap.SINGAPORE,
-      to: locationsMap.AUSTRALIA,
-      duration: 4800,
+      from: locationsMap.ITALY,
+      to: locationsMap.TURKEY,
+      duration: 3900,
       gap: 1.2,
-      dash: 0.26,
-      initialGap: 0.1,
+      dash: 0.25,
+      initialGap: 0.15,
+      color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
+    },
+    {
+      from: locationsMap.TURKEY,
+      to: locationsMap.ISRAEL,
+      duration: 3200,
+      gap: 1.0,
+      dash: 0.28,
+      initialGap: 0.3,
+      color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
+    },
+    {
+      from: locationsMap.ISRAEL,
+      to: locationsMap.EGYPT,
+      duration: 2800,
+      gap: 1.0,
+      dash: 0.3,
+      initialGap: 0.45,
+      color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
+    },
+    {
+      from: locationsMap.EGYPT,
+      to: locationsMap.QATAR,
+      duration: 4000,
+      gap: 1.2,
+      dash: 0.24,
+      initialGap: 0.05,
       color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
     },
     {
       from: locationsMap.QATAR,
-      to: locationsMap.GERMANY,
-      duration: 5200,
-      gap: 1.4,
+      to: locationsMap.SAUDI_ARABIA,
+      duration: 3000,
+      gap: 1.0,
+      dash: 0.3,
+      initialGap: 0.2,
+      color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
+    },
+    {
+      from: locationsMap.EGYPT,
+      to: locationsMap.KENYA,
+      duration: 4400,
+      gap: 1.3,
+      dash: 0.22,
+      initialGap: 0.35,
+      color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
+    },
+    {
+      from: locationsMap.KENYA,
+      to: locationsMap.SOUTH_AFRICA,
+      duration: 4800,
+      gap: 1.3,
       dash: 0.24,
       initialGap: 0.5,
       color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
     },
     {
       from: locationsMap.GERMANY,
-      to: locationsMap.UK,
-      duration: 3500,
-      gap: 1.0,
-      dash: 0.3,
-      initialGap: 0.0,
+      to: locationsMap.SPAIN,
+      duration: 3400,
+      gap: 1.1,
+      dash: 0.27,
+      initialGap: 0.6,
       color: ["rgba(230, 80, 0, 0.1)", "rgba(255, 110, 0, 1)"],
     },
   ];
@@ -229,20 +258,20 @@ function Hero() {
   // Fetch countries data
   useEffect(() => {
     const controller = new AbortController();
-    
+
     fetch(
       "https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson",
       { signal: controller.signal }
     )
       .then((res) => {
-        if (!res.ok) throw new Error('Network response was not ok');
+        if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
       })
       .then((data) => {
         setCountriesData(data.features);
       })
       .catch((err) => {
-        if (err.name !== 'AbortError') {
+        if (err.name !== "AbortError") {
           console.error("Error loading countries data:", err);
         }
       });
@@ -261,35 +290,43 @@ function Hero() {
       .backgroundColor("rgba(0,0,0,0)")
       .showAtmosphere(true)
       .atmosphereColor("#3b82f6")
-      .atmosphereAltitude(0.2)
-      .showGraticules(false);
+      .atmosphereAltitude(0.22)
+      .showGraticules(false)
+      .showGlobe(true);
 
     globeInstance.current = globe;
 
+    // Near-black, subtly emissive sphere so the dotted hex texture reads
+    // as glowing points against deep space, matching the reference look.
     const darkSphereMaterial = new THREE.MeshPhongMaterial({
-      color: 0x07090e,
-      emissive: 0x020305,
+      color: 0x050608,
+      emissive: 0x02030a,
       specular: 0x1d2433,
-      shininess: 12,
+      shininess: 10,
       transparent: true,
-      opacity: 0.98,
+      opacity: 1,
     });
     globe.globeMaterial(darkSphereMaterial);
 
+    // --- DOTTED / STIPPLED CONTINENT TEXTURE ---
+    // Swap the old solid-cap polygonsData rendering for hexPolygonsData,
+    // which fills each landmass with a fine hex-dot grid instead of a
+    // flat white shape. Small resolution + tight margin = dense dot look.
     globe
-      .polygonsData(countriesData)
-      .polygonCapColor(() => "rgba(255, 255, 255, 0.85)")
-      .polygonSideColor(() => "rgba(0, 0, 0, 0)")
-      .polygonStrokeColor(() => "#131822")
-      .polygonAltitude(0.005);
+      .hexPolygonsData(countriesData)
+      .hexPolygonResolution(3)
+      .hexPolygonMargin(0.72)
+      .hexPolygonUseDots(true)
+      .hexPolygonColor(() => "rgba(255, 255, 255, 0.85)")
+      .hexPolygonAltitude(0.003);
 
     globe
       .pointsData(locationsList)
       .pointLat("lat")
       .pointLng("lng")
       .pointColor(() => "#f97316")
-      .pointRadius(0.5)
-      .pointAltitude(0.02);
+      .pointRadius(0.45)
+      .pointAltitude(0.015);
 
     globe
       .arcsData(routes)
@@ -333,7 +370,7 @@ function Hero() {
             padding: 1px 4px;
             border-radius: 2px;
             font-family: monospace;
-            font-size: ${isMobile ? '6px' : '8px'};
+            font-size: ${isMobile ? "6px" : "8px"};
             font-weight: 700;
             letter-spacing: 0.5px;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -350,8 +387,10 @@ function Hero() {
     controls.autoRotateSpeed = isMobile ? 0.6 : 0.4;
     controls.enableZoom = false;
 
-    const altitude = isMobile ? 2.5 : 1.55;
-    globe.pointOfView({ lat: 20.0, lng: 70.0, altitude }, 0);
+    // Frame on the Europe / Middle East / Africa cluster, tucked toward
+    // the upper-right of the viewport the way the reference crops it.
+    const altitude = isMobile ? 2.4 : 1.5;
+    globe.pointOfView({ lat: 15.0, lng: 25.0, altitude }, 0);
 
     const handleResize = () => {
       if (!globeContainer.current) return;
@@ -408,7 +447,7 @@ function Hero() {
   };
 
   return (
-    <div className={`bg-[#050507] font-mono text-white ${!isMobile ? 'lg:cursor-none' : ''} min-h-[100vh]`}>
+    <div className={`bg-[#050507] font-mono text-white ${!isMobile ? "lg:cursor-none" : ""} min-h-[100vh]`}>
       <CustomCursor />
 
       <section className="relative min-h-screen w-full overflow-hidden">
@@ -521,9 +560,11 @@ function Hero() {
           </div>
 
           {/* GLOBE CONTAINER */}
-          <div 
+          <div
             className={`relative ${
-              isMobile ? 'h-[280px] sm:h-[400px] w-full mt-4' : 'h-[380px] sm:h-[480px] w-full lg:absolute lg:right-[-12%] lg:top-[-5%] lg:h-[110vh] lg:w-[68vw]'
+              isMobile
+                ? "h-[280px] sm:h-[400px] w-full mt-4"
+                : "h-[380px] sm:h-[480px] w-full lg:absolute lg:right-[-12%] lg:top-[-5%] lg:h-[110vh] lg:w-[68vw]"
             } z-10 pointer-events-auto`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
