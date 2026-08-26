@@ -430,10 +430,10 @@ function ContactSection({ setCursorState, isMobile }) {
             <div>
               <StaticLabel>Head Office</StaticLabel>
               <div className="space-y-1">
-                <p className="text-sm sm:text-base font-bold leading-snug text-black">
+                <p className="text-sm sm:text-base font-medium leading-snug text-black">
                   2A International Square,
                 </p>
-                <p className="text-sm sm:text-base font-bold leading-snug text-black">
+                <p className="text-sm sm:text-base font-medium leading-snug text-black">
                   Tullamarine VIC 3043, Australia.
                 </p>
               </div>
@@ -455,7 +455,7 @@ function ContactSection({ setCursorState, isMobile }) {
             {/* Operating Across - Static label, NO ANIMATION */}
             <div>
               <StaticLabel>Operating Across</StaticLabel>
-              <p className="text-sm sm:text-base font-bold leading-snug text-black">
+              <p className="text-sm sm:text-base font-medium leading-snug text-black">
                 Australia
                 <br className="sm:hidden" />
                 <span className="hidden sm:inline">&nbsp;/&nbsp;</span>
@@ -478,7 +478,7 @@ function ContactSection({ setCursorState, isMobile }) {
               <a
                 href="mailto:contact@unitedcarriers.com"
                 {...hoverProps}
-                className="group relative inline-block text-sm font-bold text-black transition-all duration-300 hover:text-[#ff4d00] break-all"
+                className="group relative inline-block text-sm font-medium text-black transition-all duration-300 hover:text-[#ff4d00] break-all"
               >
                 <span className="relative z-10">contact@unitedcarriers.com</span>
                 <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-[#ff4d00] transition-all duration-300 group-hover:w-full" />
@@ -500,10 +500,10 @@ function ContactSection({ setCursorState, isMobile }) {
             {/* Office Hours - Static label, NO ANIMATION */}
             <div>
               <StaticLabel>Office Hours</StaticLabel>
-              <p className="text-sm sm:text-base font-bold leading-snug text-black">
+              <p className="text-sm sm:text-base font-medium leading-snug text-black">
                 Monday - Friday
               </p>
-              <p className="text-sm sm:text-base font-bold leading-snug text-black">
+              <p className="text-sm sm:text-base font-medium leading-snug text-black">
                 8:30AM - 5PM
               </p>
             </div>
@@ -742,7 +742,7 @@ export default function PremiumAnimatedFooter() {
   };
 
   return (
-    <div className="relative w-full overflow-hidden bg-[#f9f9f7] text-black font-mono select-none">
+    <div className="relative w-full overflow-hidden bg-[#f9f9f7] text-black font-sans select-none">
       {/* 1. DYNAMIC CURSOR - Hidden on mobile */}
       {!isMobile && (
         <motion.div
@@ -816,10 +816,10 @@ export default function PremiumAnimatedFooter() {
                     <span className="text-xs font-bold text-gray-400 mr-3 sm:mr-6 flex-shrink-0">
                       {faq.id}
                     </span>
-                    <span className="flex-1 text-xs sm:text-sm font-bold text-black pr-2">
+                    <span className="flex-1 text-xs sm:text-sm font-medium text-black pr-2">
                       {faq.question}
                     </span>
-                    <span className="text-sm sm:text-base font-mono text-gray-400 flex-shrink-0">
+                    <span className="text-sm sm:text-base font-sans text-gray-400 flex-shrink-0">
                       {openFaq === faq.id ? "\u2212" : "+"}
                     </span>
                   </button>
