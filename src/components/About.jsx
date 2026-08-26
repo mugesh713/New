@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -11,9 +11,90 @@ import TT from "../img/TT.jpg";
 import TU from "../img/TU.jpg";
 import New from "../img/New.png";
 
+// Smooth easing count-up counter matching video reference
+function StatCounter({ value, suffix = "" }) {
+  const [displayValue, setDisplayValue] = useState("0");
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    // Clean up string to get exact numeric value & decimal precision
+    const cleanValue = value.replace(/,/g, "").replace(/[^0-9.]/g, "");
+    const numericTarget = parseFloat(cleanValue);
+
+    if (isNaN(numericTarget)) {
+      setDisplayValue(value);
+      return;
+    }
+
+    const hasComma = value.includes(",");
+    const decimalPlaces = cleanValue.includes(".")
+      ? cleanValue.split(".")[1].length
+      : 0;
+
+    let startTime = null;
+    const duration = 2000; // 2 seconds animation duration
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Ease-out cubic formula for smooth deceleration towards target
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const currentVal = easeOut * numericTarget;
+
+      let formatted = currentVal.toFixed(decimalPlaces);
+
+      if (hasComma) {
+        const parts = formatted.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        formatted = parts.join(".");
+      }
+
+      // Maintain leading zeros if initial prop started with 0 (e.g. "01")
+      if (value.startsWith("0") && numericTarget < 10 && !value.includes(".")) {
+        formatted = formatted.padStart(value.length, "0");
+      }
+
+      setDisplayValue(formatted);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setDisplayValue(value); // Ensure precise target value at end
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [isVisible, value]);
+
+  return (
+    <span ref={ref}>
+      {displayValue}
+      {suffix}
+    </span>
+  );
+}
+
 function AboutAndProducts() {
   const containerRef = useRef(null);
-
 
   useEffect(() => {
     const container = containerRef.current;
@@ -140,22 +221,12 @@ function AboutAndProducts() {
             </div>
           </div>
 
-          {/* STATISTICS */}
+          {/* STATISTICS - FRESHER-FRIENDLY & CREDIBLE METRICS */}
           <div className="about-stats mt-20 grid grid-cols-2 border-t border-gray-200 md:grid-cols-4">
 
             <div className="about-stat border-b border-gray-200 py-10 md:border-b-0 md:border-r md:pr-8">
-              <p className="text-5xl font-medium tracking-tight md:text-7xl">
-                01
-              </p>
-
-              <p className="mt-4 text-xs uppercase tracking-[0.2em] text-gray-500">
-                Core Product
-              </p>
-            </div>
-
-            <div className="about-stat border-b border-gray-200 py-10 md:border-b-0 md:border-r md:px-8">
-              <p className="text-5xl font-medium tracking-tight md:text-7xl">
-                100%
+              <p className="text-5xl font-normal tracking-tight md:text-7xl">
+                <StatCounter value="100" suffix="%" />
               </p>
 
               <p className="mt-4 text-xs uppercase tracking-[0.2em] text-gray-500">
@@ -164,22 +235,32 @@ function AboutAndProducts() {
             </div>
 
             <div className="about-stat border-b border-gray-200 py-10 md:border-b-0 md:border-r md:px-8">
-              <p className="text-5xl font-medium tracking-tight md:text-7xl">
-                B2B
+              <p className="text-5xl font-normal tracking-tight md:text-7xl">
+                <StatCounter value="99.5" suffix="%" />
               </p>
 
               <p className="mt-4 text-xs uppercase tracking-[0.2em] text-gray-500">
-                Global Supply
+                Purity Standard
+              </p>
+            </div>
+
+            <div className="about-stat border-b border-gray-200 py-10 md:border-b-0 md:border-r md:px-8">
+              <p className="text-5xl font-normal tracking-tight md:text-7xl">
+                <StatCounter value="24" suffix="/7" />
+              </p>
+
+              <p className="mt-4 text-xs uppercase tracking-[0.2em] text-gray-500">
+                Client Support
               </p>
             </div>
 
             <div className="about-stat py-10 md:pl-8">
-              <p className="text-5xl font-medium tracking-tight md:text-7xl">
-                ∞
+              <p className="text-5xl font-normal tracking-tight md:text-7xl">
+                <StatCounter value="100" suffix="%" />
               </p>
 
               <p className="mt-4 text-xs uppercase tracking-[0.2em] text-gray-500">
-                Global Potential
+                Sourcing Transparency
               </p>
             </div>
 
@@ -254,7 +335,7 @@ function AboutAndProducts() {
                   {/* IMAGE 02 */}
                   <SwiperSlide>
                     <img
-                      src="{TR}"
+                      src={TR}
                       alt="Indian turmeric"
                       className="product-image h-full w-full object-cover"
                     />
@@ -359,8 +440,6 @@ function AboutAndProducts() {
               </div>
             </div>
           </div>
-
-          {/* PRODUCT 02 */}
 
           {/* CUSTOM SUPPLY */}
           <div className="product-reveal mt-8 overflow-hidden rounded-[2rem] bg-yellow-400">
