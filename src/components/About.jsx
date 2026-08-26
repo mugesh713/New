@@ -506,22 +506,42 @@ function AboutAndProducts() {
               </div>
             </div>
 
-            <div className="about-description flex items-end lg:col-span-5">
-              <div className="max-w-lg">
-                <p className="text-base md:text-lg leading-7 md:leading-8 text-gray-600">
-                  We connect trusted Indian turmeric suppliers with
-                  international buyers through responsible sourcing, careful
-                  handling and dependable export solutions.
-                </p>
+           <div className="about-description flex items-end lg:col-span-5">
+  <div className="max-w-lg">
+    <p className="text-base md:text-lg leading-7 md:leading-8 text-gray-600">
+      We connect trusted Indian turmeric suppliers with
+      international buyers through responsible sourcing, careful
+      handling and dependable export solutions.
+    </p>
 
-                <div className="mt-6 md:mt-8">
-                  <SimpleButton href="#products" variant="black">
-                    Discover our approach
-                  </SimpleButton>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="mt-6 md:mt-8">
+      <a 
+        href="#products" 
+        className="text-sm font-medium text-black hover:text-yellow-600 transition-colors duration-300 inline-flex items-center gap-2"
+      >
+        Discover our approach →
+      </a>
+    </div>
+  </div>
+</div>
+          </div><div className="about-description flex items-end lg:col-span-5">
+  <div className="max-w-lg">
+    <p className="text-base md:text-lg leading-7 md:leading-8 text-gray-600">
+      We connect trusted Indian turmeric suppliers with
+      international buyers through responsible sourcing, careful
+      handling and dependable export solutions.
+    </p>
+
+    <div className="mt-6 md:mt-8">
+      <a 
+        href="#products" 
+        className="text-sm font-medium text-black hover:text-yellow-600 transition-colors duration-300 inline-flex items-center gap-2"
+      >
+        Discover our approach →
+      </a>
+    </div>
+  </div>
+</div>
 
           {/* LARGE IMAGE GRAPHIC */}
           <div className="about-image-wrapper relative mt-16 md:mt-24 overflow-hidden rounded-[2rem] bg-neutral-100">
@@ -560,44 +580,44 @@ function AboutAndProducts() {
             </div>
           </div>
 
-          {/* STATISTICS */}
-          <div className="about-stats mt-12 md:mt-20 grid grid-cols-2 border-t border-gray-200 md:grid-cols-4">
-            <div className="about-stat border-b border-gray-200 py-6 md:py-10 md:border-b-0 md:border-r md:pr-8">
-              <p className="text-3xl md:text-5xl lg:text-7xl font-normal tracking-tight">
-                <StatCounter value="100" suffix="%" />
-              </p>
-              <p className="mt-2 md:mt-4 text-[10px] md:text-xs uppercase tracking-[0.2em] text-gray-500">
-                Quality Focus
-              </p>
-            </div>
+         {/* STATISTICS */}
+<div className="about-stats mt-12 md:mt-20 grid grid-cols-2 border-t border-gray-200 md:grid-cols-4">
+  <div className="about-stat border-b border-gray-200 py-6 md:py-10 md:border-b-0 md:border-r md:pr-8">
+    <p className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight">
+      <StatCounter value="100" suffix="%" />
+    </p>
+    <p className="mt-2 md:mt-4 text-[10px] md:text-xs uppercase tracking-[0.2em] text-gray-500">
+      Quality Focus
+    </p>
+  </div>
 
-            <div className="about-stat border-b border-gray-200 py-6 md:py-10 md:border-b-0 md:border-r md:px-8">
-              <p className="text-3xl md:text-5xl lg:text-7xl font-normal tracking-tight">
-                <StatCounter value="99.5" suffix="%" />
-              </p>
-              <p className="mt-2 md:mt-4 text-[10px] md:text-xs uppercase tracking-[0.2em] text-gray-500">
-                Purity Standard
-              </p>
-            </div>
+  <div className="about-stat border-b border-gray-200 py-6 md:py-10 md:border-b-0 md:border-r md:px-8">
+    <p className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight">
+      <StatCounter value="99.5" suffix="%" />
+    </p>
+    <p className="mt-2 md:mt-4 text-[10px] md:text-xs uppercase tracking-[0.2em] text-gray-500">
+      Purity Standard
+    </p>
+  </div>
 
-            <div className="about-stat border-b border-gray-200 py-6 md:py-10 md:border-b-0 md:border-r md:px-8">
-              <p className="text-3xl md:text-5xl lg:text-7xl font-normal tracking-tight">
-                <StatCounter value="24" suffix="/7" />
-              </p>
-              <p className="mt-2 md:mt-4 text-[10px] md:text-xs uppercase tracking-[0.2em] text-gray-500">
-                Client Support
-              </p>
-            </div>
+  <div className="about-stat border-b border-gray-200 py-6 md:py-10 md:border-b-0 md:border-r md:px-8">
+    <p className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight">
+      <StatCounter value="24" suffix="/7" />
+    </p>
+    <p className="mt-2 md:mt-4 text-[10px] md:text-xs uppercase tracking-[0.2em] text-gray-500">
+      Client Support
+    </p>
+  </div>
 
-            <div className="about-stat py-6 md:py-10 md:pl-8">
-              <p className="text-3xl md:text-5xl lg:text-7xl font-normal tracking-tight">
-                <StatCounter value="100" suffix="%" />
-              </p>
-              <p className="mt-2 md:mt-4 text-[10px] md:text-xs uppercase tracking-[0.2em] text-gray-500">
-                Sourcing Transparency
-              </p>
-            </div>
-          </div>
+  <div className="about-stat py-6 md:py-10 md:pl-8">
+    <p className="text-2xl md:text-4xl lg:text-5xl font-normal tracking-tight">
+      <StatCounter value="100" suffix="%" />
+    </p>
+    <p className="mt-2 md:mt-4 text-[10px] md:text-xs uppercase tracking-[0.2em] text-gray-500">
+      Sourcing Transparency
+    </p>
+  </div>
+</div>
         </div>
       </section>
 
@@ -752,103 +772,112 @@ function AboutAndProducts() {
           </div>
 
           {/* ================= ORDERED BANNERS ================= */}
-          <div className="mt-16 md:mt-28">
-            {/* 1. WHITE BANNER */}
-            <div className="product-reveal overflow-hidden rounded-[2rem] bg-white text-black">
-              <div className="grid gap-6 md:gap-8 p-6 md:p-8 lg:p-14 lg:grid-cols-12">
-                <div className="lg:col-span-7">
-                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-yellow-600">
-                    01 / Standard Sourcing
-                  </p>
-                  <h3 className="mt-3 md:mt-4 max-w-4xl text-2xl md:text-4xl lg:text-6xl font-medium leading-[1.1] tracking-[-0.03em]">
-                    Your market.
-                    <br />
-                    Your requirements.
-                    <br />
-                    Our supply.
-                  </h3>
-                </div>
+<div className="mt-16 md:mt-28">
+  {/* 1. WHITE BANNER */}
+  <div className="product-reveal overflow-hidden rounded-[2rem] bg-white text-black">
+    <div className="grid gap-6 md:gap-8 p-6 md:p-8 lg:p-14 lg:grid-cols-12">
+      <div className="lg:col-span-7">
+        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-yellow-600">
+          01 / Standard Sourcing
+        </p>
+        <h3 className="mt-3 md:mt-4 max-w-4xl text-2xl md:text-4xl lg:text-6xl font-medium leading-[1.1] tracking-[-0.03em]">
+          Your market.
+          <br />
+          Your requirements.
+          <br />
+          Our supply.
+        </h3>
+      </div>
 
-                <div className="flex flex-col justify-center lg:col-span-5">
-                  <p className="text-sm leading-relaxed text-black/70">
-                    Tell us your required quantity, packaging, destination and
-                    specifications. We'll work with you to prepare an export
-                    solution around your requirements.
-                  </p>
+      <div className="flex flex-col justify-center lg:col-span-5">
+        <p className="text-sm leading-relaxed text-black/70">
+          Tell us your required quantity, packaging, destination and
+          specifications. We'll work with you to prepare an export
+          solution around your requirements.
+        </p>
 
-                  <div className="mt-4 md:mt-6">
-                    <SimpleButton href="#quote" variant="black">
-                      Discuss Your Requirements
-                    </SimpleButton>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className="mt-4 md:mt-6">
+          <a 
+            href="#quote" 
+            className="text-sm font-medium text-black hover:text-yellow-600 transition-colors duration-300"
+          >
+            Discuss Your Requirements →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            {/* 2. BLACK BANNER */}
-            <div className="product-reveal mt-4 md:mt-6 overflow-hidden rounded-[2rem] bg-zinc-950 text-white">
-              <div className="grid gap-6 md:gap-8 p-6 md:p-8 lg:p-14 lg:grid-cols-12">
-                <div className="lg:col-span-7">
-                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-zinc-400">
-                    02 / Global Logistics
-                  </p>
-                  <h3 className="mt-3 md:mt-4 max-w-4xl text-2xl md:text-4xl lg:text-6xl font-medium leading-[1.1] tracking-[-0.03em] text-white">
-                    Your market.
-                    <br />
-                    Your requirements.
-                    <br />
-                    Our supply.
-                  </h3>
-                </div>
+  {/* 2. BLACK BANNER */}
+  <div className="product-reveal mt-4 md:mt-6 overflow-hidden rounded-[2rem] bg-zinc-950 text-white">
+    <div className="grid gap-6 md:gap-8 p-6 md:p-8 lg:p-14 lg:grid-cols-12">
+      <div className="lg:col-span-7">
+        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-zinc-400">
+          02 / Global Logistics
+        </p>
+        <h3 className="mt-3 md:mt-4 max-w-4xl text-2xl md:text-4xl lg:text-6xl font-medium leading-[1.1] tracking-[-0.03em] text-white">
+          Your market.
+          <br />
+          Your requirements.
+          <br />
+          Our supply.
+        </h3>
+      </div>
 
-                <div className="flex flex-col justify-center lg:col-span-5">
-                  <p className="text-sm leading-relaxed text-zinc-300">
-                    Tell us your required quantity, packaging, destination and
-                    specifications. We'll work with you to prepare an export
-                    solution around your requirements.
-                  </p>
+      <div className="flex flex-col justify-center lg:col-span-5">
+        <p className="text-sm leading-relaxed text-zinc-300">
+          Tell us your required quantity, packaging, destination and
+          specifications. We'll work with you to prepare an export
+          solution around your requirements.
+        </p>
 
-                  <div className="mt-4 md:mt-6">
-                    <SimpleButton href="#quote" variant="white">
-                      Discuss Your Requirements
-                    </SimpleButton>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className="mt-4 md:mt-6">
+          <a 
+            href="#quote" 
+            className="text-sm font-medium text-white hover:text-yellow-400 transition-colors duration-300"
+          >
+            Discuss Your Requirements →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            {/* 3. YELLOW BANNER */}
-            <div className="product-reveal mt-4 md:mt-6 overflow-hidden rounded-[2rem] bg-yellow-400 text-black">
-              <div className="grid gap-6 md:gap-8 p-6 md:p-8 lg:p-14 lg:grid-cols-12">
-                <div className="lg:col-span-7">
-                  <p className="text-xs font-semibold uppercase tracking-[0.35em] text-black/70">
-                    03 / Custom Supply
-                  </p>
-                  <h3 className="mt-3 md:mt-4 max-w-4xl text-2xl md:text-4xl lg:text-6xl font-medium leading-[1.1] tracking-[-0.03em]">
-                    Your market.
-                    <br />
-                    Your requirements.
-                    <br />
-                    Our supply.
-                  </h3>
-                </div>
+  {/* 3. YELLOW BANNER */}
+  <div className="product-reveal mt-4 md:mt-6 overflow-hidden rounded-[2rem] bg-yellow-400 text-black">
+    <div className="grid gap-6 md:gap-8 p-6 md:p-8 lg:p-14 lg:grid-cols-12">
+      <div className="lg:col-span-7">
+        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-black/70">
+          03 / Custom Supply
+        </p>
+        <h3 className="mt-3 md:mt-4 max-w-4xl text-2xl md:text-4xl lg:text-6xl font-medium leading-[1.1] tracking-[-0.03em]">
+          Your market.
+          <br />
+          Your requirements.
+          <br />
+          Our supply.
+        </h3>
+      </div>
 
-                <div className="flex flex-col justify-center lg:col-span-5">
-                  <p className="text-sm leading-relaxed text-black/70">
-                    Tell us your required quantity, packaging, destination and
-                    specifications. We'll work with you to prepare an export
-                    solution around your requirements.
-                  </p>
+      <div className="flex flex-col justify-center lg:col-span-5">
+        <p className="text-sm leading-relaxed text-black/70">
+          Tell us your required quantity, packaging, destination and
+          specifications. We'll work with you to prepare an export
+          solution around your requirements.
+        </p>
 
-                  <div className="mt-4 md:mt-6">
-                    <SimpleButton href="#quote" variant="yellow">
-                      Discuss Your Requirements
-                    </SimpleButton>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="mt-4 md:mt-6">
+          <a 
+            href="#quote" 
+            className="text-sm font-medium text-black hover:text-yellow-600 transition-colors duration-300"
+          >
+            Discuss Your Requirements →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
       </section>
 
