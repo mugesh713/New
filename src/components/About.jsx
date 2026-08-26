@@ -11,6 +11,49 @@ import TT from "../img/TT.jpg";
 import TU from "../img/TU.jpg";
 import New from "../img/New.png";
 
+// Data mapping for captions and side panel details corresponding to each slide index
+const slideCaptions = [
+  { number: "01", name: "OrganicSpicies" },
+  { number: "02", name: "Fresh Turmeric Powder" },
+  { number: "03", name: "Organic Ginger" },
+  { number: "04", name: "Processed Spicies" },
+];
+
+const productDetails = [
+  {
+    tag: "Ground Turmeric",
+    headline: <>Fine.<br />Consistent.<br />Export ready.</>,
+    description: "Turmeric powder prepared for international B2B requirements and suitable for food manufacturers, wholesalers and distributors.",
+    form: "Powder",
+    supply: "Bulk",
+    market: "Worldwide"
+  },
+  {
+    tag: "Raw Turmeric",
+    headline: <>Fresh.<br />Organic.<br />Farm Sourced.</>,
+    description: "Carefully selected raw turmeric roots harvested at peak maturity, ideal for extraction, essential oils, and processing.",
+    form: "Finger/Root",
+    supply: "Bulk Container",
+    market: "Global Export"
+  },
+  {
+    tag: "Premium Grade",
+    headline: <>High Curcumin.<br />Pure Quality.<br />Lab Tested.</>,
+    description: "Selected high-curcumin turmeric grade optimized for nutraceuticals, health supplements, and cosmetic applications.",
+    form: "Whole / Ground",
+    supply: "Custom Packaging",
+    market: "Worldwide"
+  },
+  {
+    tag: "Processed Commercial",
+    headline: <>Standardized.<br />Refined.<br />High Yield.</>,
+    description: "Commercially processed turmeric tailored to specification for culinary blends, industrial food processing, and retail repackaging.",
+    form: "Processed",
+    supply: "Bulk Sacks",
+    market: "Worldwide"
+  }
+];
+
 // Smooth easing count-up counter matching video reference
 function StatCounter({ value, suffix = "" }) {
   const [displayValue, setDisplayValue] = useState("0");
@@ -95,6 +138,7 @@ function StatCounter({ value, suffix = "" }) {
 
 function AboutAndProducts() {
   const containerRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -304,13 +348,14 @@ function AboutAndProducts() {
           <div className="mt-24 grid gap-8 lg:grid-cols-12">
 
             {/* PRODUCT IMAGE */}
-            <div className="product-image-reveal overflow-hidden rounded-[2rem] bg-white lg:col-span-8">
+            <div className="product-image-reveal overflow-hidden rounded-[2rem] bg-white lg:col-span-6">
 
               <div className="product-image-group group relative h-[500px] overflow-hidden md:h-[650px]">
 
                 {/* ================= TURMERIC IMAGE CAROUSEL ================= */}
                 <Swiper
                   modules={[Autoplay]}
+                  initialSlide={0}
                   autoplay={{
                     delay: 3000,
                     disableOnInteraction: false,
@@ -321,8 +366,12 @@ function AboutAndProducts() {
                   grabCursor={true}
                   allowTouchMove={true}
                   className="h-full w-full"
+                  onInit={(swiper) => {
+                    swiper.slideToLoop(0, 0);
+                    setActiveIndex(swiper.realIndex);
+                  }}
+                  onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                 >
-
                   {/* IMAGE 01 */}
                   <SwiperSlide>
                     <img
@@ -358,9 +407,7 @@ function AboutAndProducts() {
                       className="product-image h-full w-full object-cover"
                     />
                   </SwiperSlide>
-
                 </Swiper>
-
                 {/* DARK GRADIENT */}
                 <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
@@ -368,11 +415,11 @@ function AboutAndProducts() {
                 <div className="product-image-caption pointer-events-none absolute bottom-8 left-8 right-8 z-20 md:bottom-10 md:left-10">
 
                   <p className="text-xs uppercase tracking-[0.3em] text-yellow-400">
-                    01 / Turmeric
+                    {slideCaptions[activeIndex].number} / Turmeric
                   </p>
 
                   <h3 className="mt-3 text-4xl font-medium text-white md:text-6xl">
-                    Turmeric Powder
+                    {slideCaptions[activeIndex].name}
                   </h3>
 
                 </div>
@@ -381,26 +428,20 @@ function AboutAndProducts() {
             </div>
 
             {/* PRODUCT INFORMATION */}
-            <div className="product-reveal product-delay-1 flex flex-col justify-between rounded-[2rem] bg-white p-8 lg:col-span-4 lg:p-10">
+            <div className="product-reveal product-delay-1 flex flex-col justify-between rounded-[2rem] bg-white p-8 lg:col-span-6 lg:p-10">
 
               <div>
 
                 <span className="inline-flex rounded-full bg-[#f4f3ef] px-4 py-2 text-xs uppercase tracking-widest text-gray-500">
-                  Ground Turmeric
+                  {productDetails[activeIndex].tag}
                 </span>
 
                 <h3 className="mt-8 text-4xl font-medium leading-tight">
-                  Fine.
-                  <br />
-                  Consistent.
-                  <br />
-                  Export ready.
+                  {productDetails[activeIndex].headline}
                 </h3>
 
                 <p className="mt-6 leading-7 text-gray-600">
-                  Turmeric powder prepared for international B2B requirements
-                  and suitable for food manufacturers, wholesalers and
-                  distributors.
+                  {productDetails[activeIndex].description}
                 </p>
 
               </div>
@@ -413,7 +454,7 @@ function AboutAndProducts() {
                   </span>
 
                   <span className="text-sm font-medium">
-                    Powder
+                    {productDetails[activeIndex].form}
                   </span>
                 </div>
 
@@ -423,7 +464,7 @@ function AboutAndProducts() {
                   </span>
 
                   <span className="text-sm font-medium">
-                    Bulk
+                    {productDetails[activeIndex].supply}
                   </span>
                 </div>
 
@@ -433,7 +474,7 @@ function AboutAndProducts() {
                   </span>
 
                   <span className="text-sm font-medium">
-                    Worldwide
+                    {productDetails[activeIndex].market}
                   </span>
                 </div>
 
@@ -717,22 +758,22 @@ function AboutAndProducts() {
             transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .product-image-reveal.is-visible ~ .product-reveal .product-stat-reveal:nth-child(1) {
+        /* Fix: Ensure stat reveals work properly */
+        .product-reveal.is-visible .product-stat-reveal {
+          opacity: 1;
+          transform: translateX(0);
+        }
+
+        .product-reveal.is-visible .product-stat-reveal:nth-child(1) {
           transition-delay: 500ms;
-          opacity: 1;
-          transform: translateX(0);
         }
 
-        .product-image-reveal.is-visible ~ .product-reveal .product-stat-reveal:nth-child(2) {
+        .product-reveal.is-visible .product-stat-reveal:nth-child(2) {
           transition-delay: 650ms;
-          opacity: 1;
-          transform: translateX(0);
         }
 
-        .product-image-reveal.is-visible ~ .product-reveal .product-stat-reveal:nth-child(3) {
+        .product-reveal.is-visible .product-stat-reveal:nth-child(3) {
           transition-delay: 800ms;
-          opacity: 1;
-          transform: translateX(0);
         }
 
         .product-link {
